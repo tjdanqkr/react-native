@@ -4,16 +4,12 @@ import { logout } from "../store/users";
 import { defaultStyles } from "../styles/defaultStyles";
 
 const HomeScreen = () => {
-    const dispatch = useDispatch();
-    const out = () => {
-        dispatch(logout());
-    };
     return (
         <View style={defaultStyles.container}>
             <View style={defaultStyles.header}>
                 <Image style={[styles.logo]} source={{ uri: "https://www.instagram.com/static/images/web/logged_out_wordmark-2x.png/d2529dbef8ed.png" }}></Image>
 
-                <Button style={styles.button} title="+" onPress={out}></Button>
+                <Button style={styles.button} title="+"></Button>
             </View>
             <View style={defaultStyles.body}>
                 <Text>Home</Text>
