@@ -1,14 +1,13 @@
-import { View, StyleSheet, Button, Image, TouchableOpacity, TextInput } from "react-native";
+import { View, StyleSheet, Button, Image, TouchableOpacity, TextInput, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { useLayoutEffect, useState } from "react";
 import { defaultStyles } from "../styles/defaultStyles";
 import { APIURL } from "../config/config";
-import { updateUsers } from "../store/users";
+import { insertPosts } from "../store/posts";
 const PostAddScreen = ({ navigation }) => {
-    const me = useSelector((state) => state.users.me);
-    const [img, setImg] = useState(me.img);
-    const [name, setName] = useState(me.name);
+    const [img, setImg] = useState("");
+    const [content, setContent] = useState("");
     const [imgUri, setImgUri] = useState(undefined);
     const [file, setFile] = useState(undefined);
     const dispatch = useDispatch();
@@ -29,37 +28,42 @@ const PostAddScreen = ({ navigation }) => {
         setImgUri(pickerResult.uri);
         setFile(formData);
     };
-    const onSubmitHandler = () => {
-        const user = { name, img, file };
+    const onSubmitHandler = async () => {
+        const post = { content, img, file };
         try {
-            dispatch(updateUsers(user));
+            dispatch(insertPosts(post));
             navigation.goBack();
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerRight: () => <Button onPress={() => onSubmitHandler(name, img, file)} title="Create" />,
+            headerRight: () => <Button onPress={() => onSubmitHandler()} title="Create" />,
         });
-    }, [navigation, name, img, file]);
+    }, [navigation, content, img, file]);
     return (
         <View style={defaultStyles.form}>
             <TouchableOpacity //
                 onPress={openImagePickerAsync}
+                style={styles.imgBox}
             >
                 {img ? (
                     <Image //
                         style={styles.img}
                         source={{ uri: `${imgUri ? imgUri : `${APIURL}${img}`}` }}
                     ></Image>
-                ) : null}
+                ) : (
+                    <Text>이미지를 선택해 주세요</Text>
+                )}
             </TouchableOpacity>
             <TextInput
                 style={defaultStyles.inputBox} //
-                onChangeText={setName}
-                placeholder="name"
+                onChangeText={setContent}
+                placeholder="content"
                 autoCapitalize="none"
-                value={name}
+                value={content}
                 multiline
                 numberOfLines={4}
             />
@@ -68,5 +72,6 @@ const PostAddScreen = ({ navigation }) => {
 };
 export default PostAddScreen;
 const styles = StyleSheet.create({
-    img: { width: 100, height: 100, borderRadius: 50, margin: 30 },
+    img: { width: 300, height: 300 },
+    imgBox: { margin: 30 },
 });

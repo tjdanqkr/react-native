@@ -62,15 +62,13 @@ export const selectPostsByKey = createAsyncThunk(
 export const insertPosts = createAsyncThunk(
     INSERT_POST, //
     async (payload, thunkAPI) => {
-        let formData = new FormData();
-        formData.append("file", payload.file);
-        await fileUpload("post", "/upload", formData);
-        const removeFilePost = { ...payload, file: "", img: `/${payload.file.name}` };
+        console.log(payload);
+        const upload = await fileUpload("post", "/upload", payload.file);
+        console.log(upload);
+        const removeFilePost = { ...payload, file: "" };
+        console.log(removeFilePost);
         const isInsert = await postPost(removeFilePost);
-
-        if (isInsert === 1) {
-            useDispatch(selectMyPost());
-        }
+        console.log(isInsert, removeFilePost);
     }
 );
 export const selectPostMain = createAsyncThunk(
