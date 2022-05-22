@@ -46,7 +46,7 @@ const SettingScreen = () => {
             <View style={defaultStyles.body}>
                 <View style={[styles.rowBox, styles.myBox]}>
                     <TouchableOpacity onPress={() => linkto("/UserUpdate")}>
-                        <Image style={styles.myImg} source={{ uri: `${APIURL}${img}` }} resizeMode={"stretch"}></Image>
+                        <Image style={styles.myImg} source={{ uri: `${APIURL}${img}` }}></Image>
                     </TouchableOpacity>
                     <View style={styles.myTextBox}>
                         <Text>{myPosts.posts.length}</Text>

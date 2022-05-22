@@ -26,7 +26,7 @@ export const fileUpload = async (method, url, data) => {
         data,
         headers: {
             // Authorization: `Bearer ${localStorage.getItem("token")}`,
-            // "Content-Type": "multipart/form-data; ",
+            "Content-Type": "multipart/form-data; ",
             Authorization: `Bearer ${token}`,
         },
     });

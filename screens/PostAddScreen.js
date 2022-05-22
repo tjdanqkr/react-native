@@ -1,5 +1,5 @@
 import { View, StyleSheet, Button, Image, TouchableOpacity, TextInput, Text } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { useLayoutEffect, useState } from "react";
 import { defaultStyles } from "../styles/defaultStyles";
