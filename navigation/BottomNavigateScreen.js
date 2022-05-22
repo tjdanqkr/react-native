@@ -38,7 +38,6 @@ const BottomNavigateScreen = () => {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Select" component={SelectScreen} />
-            <Tab.Screen name="Picture" component={PictureScreen} />
             <Tab.Screen name="Settings" component={SettingScreen} />
         </Tab.Navigator>
     );
