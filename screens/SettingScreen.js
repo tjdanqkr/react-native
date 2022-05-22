@@ -1,3 +1,4 @@
+import { useIsFocused, useLinkTo } from "@react-navigation/native";
 import { useEffect } from "react";
 import { Text, View, StyleSheet, Button, Image, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,11 +10,13 @@ import { defaultStyles } from "../styles/defaultStyles";
 import Post from "./components/Post";
 
 const SettingScreen = () => {
+    const linkto = useLinkTo();
     const { name, img } = useSelector((state) => state.users.me);
     const myPosts = useSelector((state) => state.posts.myPosts);
     const follower = useSelector((state) => state.follows.myFollower);
     const following = useSelector((state) => state.follows.myFollowing);
     const dispatch = useDispatch();
+    const isFocused = useIsFocused();
     const getMyPost = () => {
         dispatch(selectMyPost());
     };
@@ -30,20 +33,20 @@ const SettingScreen = () => {
         getMyPost();
         myFollower();
         myFollowing();
-    }, []);
+    }, [isFocused]);
     return (
         <>
             <View style={defaultStyles.header}>
                 <Text style={styles.titleText}>{name}</Text>
                 <View style={styles.rowBox}>
-                    <Button title="+" onPress={out}></Button>
+                    <Button title="+" onPress={() => linkto("/PostAdd")}></Button>
                     <Button title="out" onPress={out}></Button>
                 </View>
             </View>
             <View style={defaultStyles.body}>
                 <View style={[styles.rowBox, styles.myBox]}>
-                    <TouchableOpacity onPress={() => console.log("click")}>
-                        <Image style={styles.myImg} source={{ uri: `${APIURL}${img}` }}></Image>
+                    <TouchableOpacity onPress={() => linkto("/UserUpdate")}>
+                        <Image style={styles.myImg} source={{ uri: `${APIURL}${img}` }} resizeMode={"stretch"}></Image>
                     </TouchableOpacity>
                     <View style={styles.myTextBox}>
                         <Text>{myPosts.posts.length}</Text>

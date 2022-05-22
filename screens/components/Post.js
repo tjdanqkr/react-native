@@ -1,16 +1,16 @@
-import { Link, useLinkBuilder, useLinkProps, useLinkTo, useNavigation } from "@react-navigation/native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOpacity } from "react-native";
 import { APIURL } from "../../config/config";
-import PostDetailScreen from "../PostDetailScreen";
 const Post = ({ posts }) => {
+    const navigation = useNavigation();
     return posts.loading ? (
         <ActivityIndicator />
     ) : (
         <View style={styles.postBox}>
             <FlatList
                 data={posts.posts} //
-                style={styles.postImg}
-                renderItem={(item) => ImgItem(item)}
+                renderItem={(item) => ImgItem(item, navigation)}
                 keyExtractor={(item) => item.id}
                 numColumns={3}
             />
@@ -19,14 +19,15 @@ const Post = ({ posts }) => {
 };
 export default Post;
 
-const ImgItem = ({ item }) => {
+const ImgItem = ({ item }, navigation) => {
     return (
-        <Link to={{ screen: "PostDetail", params: item }} style={styles.postImg}>
-            <Image style={{ width: "100%", aspectRatio: 1 }} source={{ uri: `${APIURL}${item.img}` }}></Image>
-        </Link>
+        <TouchableOpacity onPress={() => navigation.navigate("PostDetail", item)} style={styles.postImg}>
+            <Image style={styles.itemImg} source={{ uri: `${APIURL}${item.img}` }} resizeMode={"stretch"}></Image>
+        </TouchableOpacity>
     );
 };
 const styles = StyleSheet.create({
     postBox: { flexDirection: "row" },
-    postImg: { width: "33%", aspectRatio: 1 },
+    postImg: { flex: 0.333 },
+    itemImg: { width: "100%", aspectRatio: 1 },
 });
