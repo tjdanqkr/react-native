@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, Image, Text, FlatList, ActivityIndicator, Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { APIURL } from "../config/config";
+import { deleteFollow, insertFollowing, selectMyFollowingOne } from "../store/follows";
 const PostDetailScreen = ({ route }) => {
     const { params } = route;
+    const dispatch = useDispatch();
     const { id } = useSelector((state) => state.users.me);
-
+    const [isMyFollowing, setIsMyFollowing] = useState(false);
+    const postFollowData = () => {
+        dispatch(selectMyFollowingOne(params.userId))
+            .unwrap()
+            .then((res) => {
+                setIsMyFollowing(res);
+            });
+    };
+    useEffect(() => {
+        postFollowData();
+    }, [params]);
+    const unFollow = async () => {
+        await dispatch(deleteFollow(params.userId));
+        await postFollowData();
+    };
+    const follow = async () => {
+        await dispatch(insertFollowing(params.userId));
+        await postFollowData();
+    };
     return (
         <View>
             <View style={styles.rowBox}>
@@ -15,10 +35,10 @@ const PostDetailScreen = ({ route }) => {
                 </View>
                 {params.userId === id ? (
                     <Text></Text> //
-                ) : params.follow ? (
-                    <Button title={"follow"} />
+                ) : !isMyFollowing ? (
+                    <Button title={"follow"} onPress={follow} />
                 ) : (
-                    <Button title={"unfollow"} />
+                    <Button title={"unfollow"} onPress={unFollow} />
                 )}
             </View>
             <View>
